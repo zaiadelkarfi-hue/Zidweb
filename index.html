@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ZidWeb — وكالة رقمية احترافية لتصميم وتطوير المواقع والمتاجر الإلكترونية" />
+  <title>ZidWeb — وكالة رقمية احترافية</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            deep: '#05050a',
+            'deep-2': '#0a0a12',
+            crimson: '#ff003c',
+            'crimson-glow': '#ff1a52',
+            'crimson-dark': '#c4002e',
+            'dark-card': '#0f0f18',
+            'border-subtle': 'rgba(255,255,255,0.06)',
+            'text-muted': '#7878a0',
+            'text-bright': '#e8e8f8',
+            gold: '#c8a96e',
+          },
+          fontFamily: {
+            cairo: ['Cairo', 'sans-serif'],
+            orbitron: ['Orbitron', 'monospace'],
+          },
+          boxShadow: {
+            'glow-sm': '0 0 20px rgba(255,0,60,0.15)',
+            'glow-md': '0 0 40px rgba(255,0,60,0.25)',
+            'glow-lg': '0 0 80px rgba(255,0,60,0.2)',
+            'card': '0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04)',
+          },
+        },
+      },
+    };
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    /* ═══════════════════════════════════════════
+       FOUNDATION
+    ═══════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --deep:        #05050a;
+      --deep-2:      #0a0a12;
+      --crimson:     #ff003c;
+      --crimson-glow:#ff1a52;
+      --crimson-dark:#c4002e;
+      --dark-card:   #0f0f18;
+      --border:      rgba(255,255,255,0.06);
+      --muted:       #7878a0;
+      --bright:      #e8e8f8;
+      --gold:        #c8a96e;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: var(--deep);
+      color: var(--bright);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--deep); }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--crimson), #600018); border-radius: 4px; }
+
+    /* ═══════════════════════════════════════════
+       CURSOR SYSTEM
+    ═══════════════════════════════════════════ */
+    #cx-dot {
+      position: fixed;
+      width: 6px; height: 6px;
+      background: #fff;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99999;
+      transform: translate(-50%,-50%);
+      mix-blend-mode: difference;
+    }
+    #cx-ring {
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(255,0,60,0.6);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99998;
+      transform: translate(-50%,-50%);
+    }
+    @media (max-width:1024px){
+      #cx-dot,#cx-ring{display:none!important;}
+      body{cursor:auto;}
+    }
+
+    /* ═══════════════════════════════════════════
+       NOISE TEXTURE
+    ═══════════════════════════════════════════ */
+    #noise {
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 9001;
+      opacity: 0.028;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+      background-size: 160px;
+    }
+
+    /* ═══════════════════════════════════════════
+       PRELOADER
+    ═══════════════════════════════════════════ */
+    #preloader {
+      position: fixed; inset: 0;
+      background: var(--deep);
+      z-index: 99997;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 28px;
+    }
+    #preloader .pl-logo {
+      display: flex; align-items: center; gap: 10px;
+    }
+    #preloader .pl-bar {
+      width: 200px; height: 1px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 1px; overflow: hidden;
+    }
+    #preloader .pl-fill {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, var(--crimson-dark), var(--crimson-glow));
+    }
+    #preloader .pl-pct {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 4px;
+    }
+
+    /* ═══════════════════════════════════════════
+       THREE.JS CANVAS
+    ═══════════════════════════════════════════ */
+    #bg-canvas {
+      position: fixed; inset: 0;
+      z-index: 0; pointer-events: none;
+    }
+
+    /* ═══════════════════════════════════════════
+       ATMOSPHERIC DEPTH LAYERS
+    ═══════════════════════════════════════════ */
+    /* Vertical gradient vignette */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,0,60,0.04) 0%, transparent 70%);
+      pointer-events: none; z-index: 1;
+    }
+
+    /* ═══════════════════════════════════════════
+       FLOATING 3D ORBS (background atmosphere)
+    ═══════════════════════════════════════════ */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      filter: blur(80px);
+      z-index: 0;
+      will-change: transform;
+    }
+    .orb-1 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(255,0,60,0.07) 0%, transparent 70%);
+      top: -120px; right: -100px;
+      animation: orb-drift-1 18s ease-in-out infinite alternate;
+    }
+    .orb-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(100,0,200,0.05) 0%, transparent 70%);
+      bottom: 20%; left: -80px;
+      animation: orb-drift-2 22s ease-in-out infinite alternate;
+    }
+    .orb-3 {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(255,0,60,0.04) 0%, transparent 70%);
+      bottom: 10%; right: 10%;
+      animation: orb-drift-1 26s ease-in-out infinite alternate-reverse;
+    }
+    @keyframes orb-drift-1 {
+      from { transform: translateY(0) translateX(0); }
+      to   { transform: translateY(40px) translateX(-20px); }
+    }
+    @keyframes orb-drift-2 {
+      from { transform: translateY(0) translateX(0); }
+      to   { transform: translateY(-50px) translateX(30px); }
+    }
+
+    /* ═══════════════════════════════════════════
+       NAVBAR
+    ═══════════════════════════════════════════ */
+    #navbar {
+      position: fixed; top: 0; inset-x: 0;
+      height: 76px;
+      z-index: 1000;
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 0 2.5rem;
+      background: rgba(5,5,10,0.5);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.4s;
+    }
+    #navbar.scrolled {
+      background: rgba(5,5,10,0.85);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+    }
+
+    /* SVG Logo sizing */
+    #navbar .logo-wrap { display: flex; align-items: center; text-decoration: none; }
+    #navbar .logo-wrap svg { height: 38px; width: auto; }
+
+    /* Nav links */
+    .nav-link {
+      position: relative;
+      font-size: 0.85rem; font-weight: 600;
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      transition: color 0.2s;
+      padding-bottom: 2px;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute; bottom: -2px; right: 0;
+      width: 0; height: 1px;
+      background: var(--crimson);
+      transition: width 0.35s cubic-bezier(.4,0,.2,1);
+    }
+    .nav-link:hover { color: #fff; }
+    .nav-link:hover::after { width: 100%; }
+
+    /* Language dropdown */
+    .lang-btn {
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px; padding: 7px 14px;
+      color: rgba(255,255,255,0.6);
+      font-family: 'Cairo', sans-serif; font-size: 0.8rem; font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+    .lang-btn:hover { background: rgba(255,0,60,0.08); border-color: rgba(255,0,60,0.3); color: #fff; }
+
+    #lang-dropdown {
+      position: absolute;
+      top: calc(100% + 10px); left: 0;
+      background: #0f0f1a;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px; overflow: hidden;
+      min-width: 140px;
+      opacity: 0; pointer-events: none;
+      transform: translateY(-6px);
+      transition: opacity 0.2s, transform 0.2s;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+    }
+    #lang-dropdown.open { opacity: 1; pointer-events: all; transform: translateY(0); }
+    #lang-dropdown a {
+      display: block; padding: 10px 16px;
+      font-size: 0.82rem; color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    #lang-dropdown a:hover { background: rgba(255,0,60,0.1); color: #fff; }
+
+    /* CTA button — navbar */
+    .btn-nav {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--crimson);
+      color: #fff; font-family: 'Cairo', sans-serif;
+      font-size: 0.8rem; font-weight: 700;
+      padding: 9px 20px; border-radius: 10px;
+      text-decoration: none; border: none; cursor: pointer;
+      box-shadow: 0 4px 20px rgba(255,0,60,0.3);
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-nav:hover { background: var(--crimson-glow); transform: translateY(-1px); box-shadow: 0 6px 28px rgba(255,0,60,0.45); }
+
+    /* Hamburger */
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 22px; height: 1.5px;
+      background: #fff; border-radius: 2px;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    @media(max-width:900px){
+      .nav-links,.lang-wrap{ display:none!important; }
+      .hamburger{ display:flex; }
+    }
+
+    /* Mobile menu */
+    #mobile-nav {
+      display: none;
+      position: fixed; top: 76px; inset-x: 0;
+      background: rgba(5,5,10,0.97);
+      backdrop-filter: blur(30px);
+      border-bottom: 1px solid var(--border);
+      z-index: 999; padding: 1.5rem 2rem;
+      flex-direction: column; gap: 1rem;
+    }
+    #mobile-nav.open { display: flex; }
+    #mobile-nav a {
+      color: rgba(255,255,255,0.75); font-size: 1rem; font-weight: 600;
+      text-decoration: none; padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.2s;
+    }
+    #mobile-nav a:hover { color: var(--crimson); }
+
+    /* ═══════════════════════════════════════════
+       SECTION CHROME
+    ═══════════════════════════════════════════ */
+    section { position: relative; z-index: 2; }
+
+    .section-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 0.7rem; font-weight: 800;
+      color: var(--crimson); letter-spacing: 3px; text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .section-eyebrow::before {
+      content: '';
+      display: block; width: 24px; height: 1px;
+      background: var(--crimson);
+      box-shadow: 0 0 8px var(--crimson);
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 900; color: #fff; line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+    .section-sub {
+      font-size: 0.95rem; color: var(--muted);
+      line-height: 1.9; max-width: 540px;
+    }
+
+    /* Glowing underline accent */
+    .accent-line {
+      position: relative; display: inline-block;
+    }
+    .accent-line::after {
+      content: '';
+      position: absolute; bottom: -5px; right: 0;
+      width: 55%; height: 2px;
+      background: var(--crimson);
+      border-radius: 2px;
+      box-shadow: 0 0 12px rgba(255,0,60,0.6);
+    }
+
+    /* ═══════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════ */
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 110px 1.5rem 80px;
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,0,60,0.08);
+      border: 1px solid rgba(255,0,60,0.2);
+      border-radius: 100px; padding: 7px 20px;
+      font-size: 0.75rem; font-weight: 700;
+      color: rgba(255,120,140,0.9);
+      letter-spacing: 1.5px; margin-bottom: 2.2rem;
+      backdrop-filter: blur(8px);
+    }
+    .hero-badge .pulse-dot {
+      width: 6px; height: 6px;
+      background: var(--crimson); border-radius: 50%;
+      animation: pulse-dot 2s ease-in-out infinite;
+      box-shadow: 0 0 6px var(--crimson);
+    }
+    @keyframes pulse-dot {
+      0%,100%{opacity:1;transform:scale(1);}
+      50%{opacity:0.3;transform:scale(0.6);}
+    }
+
+    .hero-h1 {
+      font-size: clamp(2.6rem, 7vw, 5.6rem);
+      font-weight: 900; color: #fff;
+      line-height: 1.12; max-width: 980px;
+      margin: 0 auto 1.5rem;
+      /* Text reveal via GSAP — starts hidden */
+      opacity: 0; transform: translateY(50px);
+    }
+    .hero-h1 .cr { color: var(--crimson); }
+
+    /* Kinetic text shimmer on accent */
+    .hero-h1 .cr {
+      background: linear-gradient(120deg, #ff003c 0%, #ff6680 40%, #ff003c 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer-text 4s linear infinite;
+    }
+    @keyframes shimmer-text {
+      0%{background-position:200% center;}
+      100%{background-position:-200% center;}
+    }
+
+    .hero-desc {
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      color: var(--muted); max-width: 580px;
+      margin: 0 auto 2.8rem; line-height: 1.9;
+      opacity: 0; transform: translateY(30px);
+    }
+
+    .hero-ctas {
+      display: flex; gap: 1rem; justify-content: center;
+      flex-wrap: wrap; margin-bottom: 4rem;
+      opacity: 0; transform: translateY(20px);
+    }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--crimson);
+      color: #fff; font-family: 'Cairo', sans-serif;
+      font-weight: 700; font-size: 0.92rem;
+      padding: 14px 30px; border-radius: 12px;
+      text-decoration: none; border: none; cursor: pointer;
+      box-shadow: 0 4px 28px rgba(255,0,60,0.35),
+                  0 0 0 1px rgba(255,0,60,0.2);
+      transition: all 0.25s;
+      position: relative; overflow: hidden;
+    }
+    .btn-primary::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+      transform: translateX(-100%);
+      transition: transform 0.5s;
+    }
+    .btn-primary:hover { background: var(--crimson-glow); transform: translateY(-2px); box-shadow: 0 8px 40px rgba(255,0,60,0.5); }
+    .btn-primary:hover::after { transform: translateX(100%); }
+
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.85);
+      font-family: 'Cairo', sans-serif; font-weight: 600; font-size: 0.92rem;
+      padding: 13px 28px; border-radius: 12px;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(8px);
+      transition: all 0.25s;
+    }
+    .btn-ghost:hover { border-color: rgba(255,0,60,0.4); background: rgba(255,0,60,0.06); transform: translateY(-2px); }
+
+    /* Trust metrics */
+    .trust-row {
+      display: flex; gap: 0; flex-wrap: wrap; justify-content: center;
+      opacity: 0;
+    }
+    .trust-item {
+      padding: 0 2.8rem; text-align: center;
+      border-left: 1px solid rgba(255,255,255,0.07);
+    }
+    .trust-item:last-child { border-right: 1px solid rgba(255,255,255,0.07); }
+    .trust-num {
+      font-family: 'Orbitron', monospace; font-size: 2rem; font-weight: 900;
+      color: #fff; line-height: 1; margin-bottom: 5px;
+    }
+    .trust-num em { color: var(--crimson); font-style: normal; }
+    .trust-lbl { font-size: 0.75rem; color: var(--muted); font-weight: 500; }
+
+    .scroll-hint {
+      position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      color: var(--muted); font-size: 0.65rem; letter-spacing: 3px;
+      animation: bob 2.2s ease-in-out infinite;
+    }
+    .scroll-hint i { font-size: 0.9rem; color: var(--crimson); }
+    @keyframes bob {
+      0%,100%{transform:translateX(-50%) translateY(0);}
+      50%{transform:translateX(-50%) translateY(8px);}
+    }
+    @media(max-width:520px){
+      .trust-item{padding:1rem 1.5rem;border-left:none;border-top:1px solid rgba(255,255,255,0.07);width:50%;}
+    }
+
+    /* ═══════════════════════════════════════════
+       MARQUEE
+    ═══════════════════════════════════════════ */
+    .marquee-wrap {
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,0,60,0.025);
+      padding: 16px 0; position: relative; z-index: 3;
+    }
+    .marquee-track {
+      display: flex; white-space: nowrap;
+      animation: marquee 26s linear infinite;
+    }
+    .marquee-track:hover { animation-play-state: paused; }
+    @keyframes marquee {
+      from{transform:translateX(0);}
+      to{transform:translateX(-50%);}
+    }
+    .mq-item {
+      font-size: 0.88rem; font-weight: 700;
+      color: rgba(255,255,255,0.35); padding: 0 2rem; flex-shrink: 0;
+      letter-spacing: 0.5px;
+    }
+    .mq-dot { color: var(--crimson); margin: 0 4px; }
+
+    /* ═══════════════════════════════════════════
+       SERVICES — 3D CARDS
+    ═══════════════════════════════════════════ */
+    #services { padding: 110px 2rem; }
+
+    /* 3-column grid */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 1.6rem; margin-top: 4rem;
+    }
+    @media(max-width:960px){.services-grid{grid-template-columns:1fr 1fr;}}
+    @media(max-width:600px){.services-grid{grid-template-columns:1fr;}}
+
+    /* The 3D tilt card */
+    .svc-card {
+      position: relative;
+      background: var(--dark-card);
+      border: 1px solid rgba(255,255,255,0.055);
+      border-radius: 20px;
+      padding: 2.2rem 2rem 2rem;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      will-change: transform;
+      transition: border-color 0.3s, box-shadow 0.4s;
+      cursor: default;
+    }
+
+    /* Animated gradient top-edge glow on hover */
+    .svc-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--crimson), transparent);
+      opacity: 0; transition: opacity 0.4s;
+    }
+    /* Inner highlight bubble */
+    .svc-card::after {
+      content: '';
+      position: absolute; top: -60px; left: -60px;
+      width: 180px; height: 180px;
+      background: radial-gradient(circle, rgba(255,0,60,0.1) 0%, transparent 70%);
+      border-radius: 50%; opacity: 0;
+      transition: opacity 0.4s, transform 0.4s;
+      pointer-events: none;
+    }
+    .svc-card:hover { border-color: rgba(255,0,60,0.22); box-shadow: 0 24px 80px rgba(0,0,0,0.6), 0 0 40px rgba(255,0,60,0.08); }
+    .svc-card:hover::before { opacity: 1; }
+    .svc-card:hover::after { opacity: 1; transform: translate(10px,10px); }
+
+    /* 3D depth line — the "card face" translateZ layer */
+    .svc-card-inner {
+      position: relative;
+      transform: translateZ(0px);
+      transition: transform 0.3s;
+    }
+    .svc-card:hover .svc-card-inner { transform: translateZ(12px); }
+
+    /* Icon badge */
+    .svc-icon {
+      width: 50px; height: 50px;
+      background: rgba(255,0,60,0.08);
+      border: 1px solid rgba(255,0,60,0.15);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; color: var(--crimson);
+      margin-bottom: 1.4rem;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .svc-card:hover .svc-icon { background: rgba(255,0,60,0.15); transform: scale(1.06) rotate(-3deg); }
+
+    /* Featured badge */
+    .svc-featured {
+      position: absolute; top: 1.2rem; left: 1.2rem;
+      background: linear-gradient(135deg, var(--crimson-dark), var(--crimson-glow));
+      color: #fff; font-size: 0.62rem; font-weight: 800;
+      padding: 4px 10px; border-radius: 100px;
+      letter-spacing: 1px; text-transform: uppercase;
+      box-shadow: 0 2px 12px rgba(255,0,60,0.4);
+    }
+
+    .svc-title { font-size: 1.1rem; font-weight: 800; color: #fff; margin-bottom: 0.6rem; }
+    .svc-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.85; margin-bottom: 1.4rem; }
+
+    .svc-features { list-style: none; display: flex; flex-direction: column; gap: 7px; margin-bottom: 1.6rem; }
+    .svc-features li {
+      display: flex; align-items: center; gap: 9px;
+      font-size: 0.8rem; color: rgba(255,255,255,0.55);
+    }
+    .svc-features li::before {
+      content: '';
+      width: 4px; height: 4px;
+      background: var(--crimson); border-radius: 50%;
+      flex-shrink: 0;
+      box-shadow: 0 0 6px var(--crimson);
+    }
+
+    /* Price chip */
+    .svc-price {
+      display: inline-flex; align-items: baseline; gap: 3px;
+      background: rgba(255,0,60,0.08);
+      border: 1px solid rgba(255,0,60,0.15);
+      border-radius: 10px; padding: 7px 14px;
+      margin-bottom: 1.2rem;
+    }
+    .svc-from { font-size: 0.7rem; color: var(--muted); }
+    .svc-amount {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.5rem; font-weight: 900; color: var(--crimson);
+    }
+    .svc-currency { font-size: 0.7rem; color: var(--muted); }
+
+    /* CTA link */
+    .svc-link {
+      display: inline-flex; align-items: center; gap: 5px;
+      color: var(--crimson); font-size: 0.82rem; font-weight: 700;
+      text-decoration: none; transition: gap 0.2s;
+    }
+    .svc-link:hover { gap: 10px; }
+
+    /* ═══════════════════════════════════════════
+       STATS RIBBON
+    ═══════════════════════════════════════════ */
+    .stats-ribbon {
+      position: relative; z-index: 2;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: rgba(10,10,20,0.5);
+      backdrop-filter: blur(12px);
+      padding: 56px 2rem;
+    }
+    .stats-inner {
+      max-width: 900px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4,1fr);
+      text-align: center;
+    }
+    @media(max-width:640px){.stats-inner{grid-template-columns:repeat(2,1fr);gap:0;}}
+    .stat-item {
+      padding: 1rem;
+      border-left: 1px solid var(--border);
+    }
+    .stat-item:last-child { border-right: 1px solid var(--border); }
+    .stat-num {
+      font-family: 'Orbitron', monospace;
+      font-size: 2.4rem; font-weight: 900; color: #fff;
+      line-height: 1; margin-bottom: 6px;
+    }
+    .stat-num em { color: var(--crimson); font-style: normal; }
+    .stat-lbl { font-size: 0.75rem; color: var(--muted); font-weight: 500; }
+
+    /* ═══════════════════════════════════════════
+       PORTFOLIO
+    ═══════════════════════════════════════════ */
+    #portfolio { padding: 110px 2rem; }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 1.2rem; margin-top: 4rem;
+    }
+    @media(max-width:900px){.portfolio-grid{grid-template-columns:1fr 1fr;}}
+    @media(max-width:560px){.portfolio-grid{grid-template-columns:1fr;}}
+
+    .port-card {
+      position: relative; border-radius: 16px; overflow: hidden;
+      aspect-ratio: 4/3; cursor: pointer;
+      border: 1px solid var(--border);
+      transform-style: preserve-3d;
+      transition: transform 0.4s cubic-bezier(.4,0,.2,1), box-shadow 0.4s;
+    }
+    .port-card:hover {
+      transform: translateY(-6px) scale(1.01);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.6), 0 0 30px rgba(255,0,60,0.08);
+    }
+
+    .port-bg {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.6s cubic-bezier(.4,0,.2,1);
+    }
+    .port-card:hover .port-bg { transform: scale(1.06); }
+
+    /* Colorway per card */
+    .port-card:nth-child(1) .port-bg { background: linear-gradient(135deg,#0f0c29,#302b63,#24243e); }
+    .port-card:nth-child(2) .port-bg { background: linear-gradient(135deg,#141e30,#1c3a55); }
+    .port-card:nth-child(3) .port-bg { background: linear-gradient(135deg,#1a0005,#3b0010); }
+    .port-card:nth-child(4) .port-bg { background: linear-gradient(135deg,#001428,#00305a); }
+    .port-card:nth-child(5) .port-bg { background: linear-gradient(135deg,#0a1a20,#1a4050); }
+    .port-card:nth-child(6) .port-bg { background: linear-gradient(135deg,#10180a,#2a4015); }
+
+    /* Mockup UI inside portfolio cards */
+    .port-mock {
+      width: 72%; height: 72%; border-radius: 8px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      display: flex; flex-direction: column; overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    }
+    .mock-bar { height: 20px; background: rgba(255,255,255,0.04); display: flex; align-items: center; padding: 0 7px; gap: 4px; }
+    .mock-dot { width: 5px; height: 5px; border-radius: 50%; }
+    .mock-body { flex: 1; padding: 8px; display: flex; flex-direction: column; gap: 5px; }
+    .mock-line { height: 5px; border-radius: 3px; background: rgba(255,255,255,0.07); }
+    .mock-block { height: 26px; border-radius: 5px; margin-top: auto; }
+
+    /* Hover overlay */
+    .port-overlay {
+      position: absolute; inset: 0;
+      background: rgba(5,5,10,0.88);
+      backdrop-filter: blur(6px);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 10px; opacity: 0;
+      transition: opacity 0.3s;
+      padding: 1.5rem; text-align: center;
+    }
+    .port-card:hover .port-overlay { opacity: 1; }
+    .port-niche { font-size: 0.68rem; font-weight: 800; letter-spacing: 2px; color: var(--crimson); text-transform: uppercase; }
+    .port-title { font-size: 0.95rem; font-weight: 800; color: #fff; }
+    .port-btn {
+      width: 38px; height: 38px;
+      background: var(--crimson); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 0.8rem; margin-top: 4px;
+      box-shadow: 0 4px 16px rgba(255,0,60,0.4);
+      transition: transform 0.2s;
+    }
+    .port-card:hover .port-btn { transform: scale(1.1); }
+
+    /* ═══════════════════════════════════════════
+       CONTACT
+    ═══════════════════════════════════════════ */
+    #contact { padding: 110px 2rem; }
+
+    .contact-wrap {
+      max-width: 1060px; margin: 4rem auto 0;
+      display: grid; grid-template-columns: 1fr 1.6fr; gap: 4rem;
+    }
+    @media(max-width:860px){.contact-wrap{grid-template-columns:1fr;gap:3rem;}}
+
+    .contact-info h3 { font-size: 1.5rem; font-weight: 900; color: #fff; margin-bottom: 0.9rem; }
+    .contact-info p { font-size: 0.88rem; color: var(--muted); line-height: 1.9; margin-bottom: 2rem; }
+
+    .contact-rows { display: flex; flex-direction: column; gap: 1rem; }
+    .cinfo-row { display: flex; align-items: center; gap: 12px; }
+    .cinfo-icon {
+      width: 38px; height: 38px; flex-shrink: 0;
+      background: rgba(255,0,60,0.08);
+      border: 1px solid rgba(255,0,60,0.15);
+      border-radius: 11px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; color: var(--crimson);
+    }
+    .cinfo-text { font-size: 0.83rem; color: rgba(255,255,255,0.7); direction: ltr; }
+
+    /* Form glass card */
+    .form-glass {
+      background: rgba(15,15,24,0.7);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 22px; padding: 2.5rem;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+      position: relative; overflow: hidden;
+    }
+    .form-glass::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,0,60,0.3), transparent);
+    }
+
+    .fg-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media(max-width:560px){.fg-row{grid-template-columns:1fr;}}
+
+    .fg-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.1rem; }
+    .fg-label { font-size: 0.75rem; font-weight: 700; color: var(--muted); letter-spacing: 0.5px; }
+    .fg-input {
+      width: 100%;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 11px;
+      padding: 13px 15px;
+      color: #fff; font-family: 'Cairo', sans-serif;
+      font-size: 0.88rem; line-height: 1.5;
+      height: 48px;
+      outline: none; direction: rtl;
+      transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+    }
+    .fg-input:focus {
+      border-color: rgba(255,0,60,0.5);
+      box-shadow: 0 0 0 3px rgba(255,0,60,0.08);
+      background: rgba(255,0,60,0.02);
+    }
+    .fg-input::placeholder { color: rgba(255,255,255,0.2); }
+    textarea.fg-input { height: auto; min-height: 126px; resize: vertical; }
+    select.fg-input option { background: #0f0f18; color: #fff; }
+
+    /* Mobile form fix */
+    @media(max-width:768px){
+      .fg-input { font-size: 16px!important; height: 52px!important; padding: 14px 14px!important; line-height:1.5!important; }
+      textarea.fg-input { height: auto!important; min-height: 140px!important; padding: 14px!important; }
+    }
+
+    /* Success state */
+    #form-success {
+      display: none; text-align: center; padding: 3rem 1rem;
+    }
+    #form-success .suc-icon {
+      width: 60px; height: 60px; margin: 0 auto 1.5rem;
+      background: rgba(255,0,60,0.1); border: 2px solid var(--crimson);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; color: var(--crimson);
+    }
+    #form-success h4 { font-size: 1.3rem; font-weight: 900; color: #fff; margin-bottom: 0.5rem; }
+    #form-success p { font-size: 0.85rem; color: var(--muted); line-height: 1.8; }
+
+    /* ═══════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════ */
+    footer {
+      background: var(--dark-card);
+      border-top: 1px solid var(--border);
+      padding: 64px 2rem 28px;
+      position: relative; z-index: 3;
+    }
+    .footer-grid {
+      max-width: 1060px; margin: 0 auto;
+      display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 3rem;
+      margin-bottom: 3rem;
+    }
+    @media(max-width:760px){.footer-grid{grid-template-columns:1fr;gap:2rem;}}
+    .footer-brand p { font-size: 0.83rem; color: var(--muted); line-height: 1.9; margin-top: 1rem; max-width: 300px; }
+    .footer-col h4 { font-size: 0.72rem; font-weight: 800; color: rgba(255,255,255,0.6); letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 1.2rem; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+    .footer-col ul li a { font-size: 0.83rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .footer-col ul li a:hover { color: var(--crimson); }
+    .footer-bottom {
+      max-width: 1060px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+      padding-top: 1.5rem; border-top: 1px solid var(--border);
+    }
+    .footer-bottom p { font-size: 0.75rem; color: rgba(255,255,255,0.22); }
+    .social-row { display: flex; gap: 8px; }
+    .social-a {
+      width: 34px; height: 34px;
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); font-size: 0.8rem; text-decoration: none;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+    .social-a:hover { border-color: var(--crimson); color: var(--crimson); background: rgba(255,0,60,0.08); }
+
+    /* ═══════════════════════════════════════════
+       WHATSAPP FLOAT
+    ═══════════════════════════════════════════ */
+    .wa-float {
+      position: fixed; bottom: 26px; left: 26px;
+      width: 56px; height: 56px;
+      background: #25d366; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; color: #fff;
+      box-shadow: 0 6px 26px rgba(37,211,102,0.38);
+      text-decoration: none; z-index: 9000;
+      transition: transform 0.25s, box-shadow 0.25s;
+      animation: wa-pulse 3.5s ease-in-out infinite;
+    }
+    .wa-float:hover { transform: scale(1.08); box-shadow: 0 10px 36px rgba(37,211,102,0.55); animation: none; }
+    .wa-tooltip {
+      position: absolute; left: calc(100% + 12px);
+      white-space: nowrap;
+      background: rgba(5,5,10,0.95);
+      border: 1px solid rgba(37,211,102,0.2);
+      color: #fff; font-size: 0.75rem; font-weight: 700;
+      padding: 6px 12px; border-radius: 9px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.2s;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    .wa-float:hover .wa-tooltip { opacity: 1; }
+    @keyframes wa-pulse {
+      0%,100%{box-shadow:0 6px 26px rgba(37,211,102,0.38);}
+      50%{box-shadow:0 6px 40px rgba(37,211,102,0.6), 0 0 0 8px rgba(37,211,102,0.08);}
+    }
+
+    /* ═══════════════════════════════════════════
+       UTILITY
+    ═══════════════════════════════════════════ */
+    .container { max-width: 1100px; margin: 0 auto; }
+    .text-center { text-align: center; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+
+    /* Parallax depth wrapper (JS sets transform) */
+    .parallax-layer { will-change: transform; }
+  </style>
+</head>
+<body>
+
+  <!-- ── Cursor ── -->
+  <div id="cx-dot"></div>
+  <div id="cx-ring"></div>
+
+  <!-- ── Noise ── -->
+  <div id="noise"></div>
+
+  <!-- ── Atmospheric orbs ── -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- ══════════════════════════════════════
+       PRELOADER
+  ══════════════════════════════════════ -->
+  <div id="preloader">
+    <div class="pl-logo">
+      <!-- SVG logo (same as navbar, just larger) -->
+      <svg width="160" height="44" viewBox="0 0 160 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Z glyph -->
+        <polygon points="6,7 28,7 6,30 28,30" fill="none" stroke="#ff003c" stroke-width="2.2" stroke-linejoin="round"/>
+        <line x1="6" y1="7" x2="28" y2="7" stroke="#ff003c" stroke-width="2.2" stroke-linecap="round"/>
+        <line x1="6" y1="30" x2="28" y2="30" stroke="#ff003c" stroke-width="2.2" stroke-linecap="round"/>
+        <!-- Accent dot -->
+        <circle cx="30" cy="8" r="2.5" fill="#ff003c"/>
+        <!-- Brand text "idweb" in Orbitron-style shapes -->
+        <text x="38" y="27" font-family="'Orbitron',monospace" font-size="18" font-weight="900" fill="white" letter-spacing="1">id</text>
+        <text x="72" y="27" font-family="'Orbitron',monospace" font-size="18" font-weight="900" fill="#ff003c" letter-spacing="1">web</text>
+        <!-- Underline rule -->
+        <line x1="38" y1="33" x2="155" y2="33" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      </svg>
+    </div>
+    <div class="pl-bar">
+      <div class="pl-fill" id="pl-fill"></div>
+    </div>
+    <div class="pl-pct" id="pl-pct">0%</div>
+  </div>
+
+  <!-- ── Three.js canvas ── -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- ══════════════════════════════════════
+       NAVBAR
+  ══════════════════════════════════════ -->
+  <header id="navbar">
+    <!-- SVG Logo -->
+    <a href="#" class="logo-wrap" aria-label="ZidWeb Home">
+      <svg viewBox="0 0 160 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Z shape — four nodes connected as a Z -->
+        <polygon points="4,6 26,6 4,29 26,29" fill="none" stroke="#ff003c" stroke-width="2" stroke-linejoin="round"/>
+        <line x1="4" y1="6" x2="26" y2="6" stroke="#ff003c" stroke-width="2" stroke-linecap="round"/>
+        <line x1="4" y1="29" x2="26" y2="29" stroke="#ff003c" stroke-width="2" stroke-linecap="round"/>
+        <!-- Signature accent dot -->
+        <circle cx="28" cy="7" r="2.2" fill="#ff003c">
+          <animate attributeName="opacity" values="1;0.3;1" dur="2.5s" repeatCount="indefinite"/>
+        </circle>
+        <!-- "id" in white -->
+        <text x="35" y="26" font-family="Orbitron,monospace" font-size="17" font-weight="900" fill="white" letter-spacing="1.5">id</text>
+        <!-- "web" in crimson -->
+        <text x="68" y="26" font-family="Orbitron,monospace" font-size="17" font-weight="900" fill="#ff003c" letter-spacing="1.5">web</text>
+        <!-- Micro sub-rule -->
+        <line x1="35" y1="32" x2="155" y2="32" stroke="rgba(255,0,60,0.18)" stroke-width="0.8"/>
+      </svg>
+    </a>
+
+    <!-- Desktop nav links -->
+    <nav class="nav-links" style="display:flex;align-items:center;gap:2.4rem;">
+      <a href="#services" class="nav-link">الخدمات</a>
+      <a href="#portfolio" class="nav-link">أعمالنا</a>
+      <a href="#contact" class="nav-link">تواصل معنا</a>
+    </nav>
+
+    <!-- Right cluster -->
+    <div style="display:flex;align-items:center;gap:0.9rem;">
+      <!-- Language selector -->
+      <div class="lang-wrap" style="position:relative;">
+        <button class="lang-btn" onclick="document.getElementById('lang-dropdown').classList.toggle('open')">
+          <i class="fa-solid fa-globe" style="font-size:0.75rem;"></i>
+          <span>العربية</span>
+          <i class="fa-solid fa-chevron-down" style="font-size:0.6rem;"></i>
+        </button>
+        <div id="lang-dropdown">
+          <a href="#">العربية</a>
+          <a href="#">Français</a>
+          <a href="#">English</a>
+        </div>
+      </div>
+
+      <a href="#contact" class="btn-nav">ابدأ مشروعك</a>
+
+      <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="القائمة">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile nav -->
+  <nav id="mobile-nav">
+    <a href="#services" onclick="closeMenu()">الخدمات</a>
+    <a href="#portfolio" onclick="closeMenu()">أعمالنا</a>
+    <a href="#contact" onclick="closeMenu()">تواصل معنا</a>
+    <a href="https://wa.me/212716693580" target="_blank" rel="noopener" style="color:#25d366;">
+      <i class="fa-brands fa-whatsapp"></i> واتساب
+    </a>
+  </nav>
+
+  <!-- ══════════════════════════════════════
+       HERO
+  ══════════════════════════════════════ -->
+  <section id="hero">
+    <div class="hero-badge parallax-layer" data-depth="0.06">
+      <span class="pulse-dot"></span>
+      وكالة رقمية متخصصة · المغرب
+    </div>
+
+    <h1 class="hero-h1 parallax-layer" data-depth="0.04">
+      نصنع <span class="cr">الهويات الرقمية</span><br />
+      ونقود الشركات نحو <span class="cr">النمو</span>
+    </h1>
+
+    <p class="hero-desc parallax-layer" data-depth="0.02">
+      نحوّل أفكارك إلى تجارب رقمية استثنائية — مواقع، متاجر، وحلول ذكية
+      تفوق توقعات عملائك وتسبق منافسيك في السوق.
+    </p>
+
+    <div class="hero-ctas">
+      <a href="#contact" class="btn-primary">
+        <i class="fa-solid fa-rocket"></i>
+        ابدأ مشروعك الآن
+      </a>
+      <a href="#portfolio" class="btn-ghost">
+        <i class="fa-regular fa-eye"></i>
+        استعرض أعمالنا
+      </a>
+    </div>
+
+    <div class="trust-row">
+      <div class="trust-item">
+        <div class="trust-num">+<em>150</em></div>
+        <div class="trust-lbl">مشروع منجز</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-num"><em>98</em>%</div>
+        <div class="trust-lbl">رضا العملاء</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-num"><em>4</em>+</div>
+        <div class="trust-lbl">سنوات خبرة</div>
+      </div>
+    </div>
+
+    <div class="scroll-hint">
+      <i class="fa-solid fa-chevron-down"></i>
+      <span>اكتشف المزيد</span>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       MARQUEE
+  ══════════════════════════════════════ -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span class="mq-item">تصميم واجهات <span class="mq-dot">•</span> تطوير مواقع <span class="mq-dot">•</span> متاجر إلكترونية <span class="mq-dot">•</span> حلول ذكية <span class="mq-dot">•</span> هويات بصرية <span class="mq-dot">•</span> تسويق رقمي <span class="mq-dot">•</span></span>
+      <span class="mq-item">تصميم واجهات <span class="mq-dot">•</span> تطوير مواقع <span class="mq-dot">•</span> متاجر إلكترونية <span class="mq-dot">•</span> حلول ذكية <span class="mq-dot">•</span> هويات بصرية <span class="mq-dot">•</span> تسويق رقمي <span class="mq-dot">•</span></span>
+      <span class="mq-item">تصميم واجهات <span class="mq-dot">•</span> تطوير مواقع <span class="mq-dot">•</span> متاجر إلكترونية <span class="mq-dot">•</span> حلول ذكية <span class="mq-dot">•</span> هويات بصرية <span class="mq-dot">•</span> تسويق رقمي <span class="mq-dot">•</span></span>
+      <span class="mq-item">تصميم واجهات <span class="mq-dot">•</span> تطوير مواقع <span class="mq-dot">•</span> متاجر إلكترونية <span class="mq-dot">•</span> حلول ذكية <span class="mq-dot">•</span> هويات بصرية <span class="mq-dot">•</span> تسويق رقمي <span class="mq-dot">•</span></span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SERVICES
+  ══════════════════════════════════════ -->
+  <section id="services">
+    <div class="container">
+      <div class="text-center">
+        <div class="section-eyebrow" style="justify-content:center;">خدماتنا الاحترافية</div>
+        <h2 class="section-title js-reveal"><span class="accent-line">حلول رقمية</span> لكل احتياج</h2>
+        <p class="section-sub mx-auto js-reveal" style="text-align:center;margin-top:0.8rem;">
+          من الفكرة إلى الإطلاق — خدمات متكاملة بجودة عالمية وأسعار تناسب كل ميزانية.
+        </p>
+        <!-- Price teaser -->
+        <div class="js-reveal" style="margin-top:1.6rem;">
+          <span style="display:inline-flex;align-items:center;gap:10px;background:rgba(255,0,60,0.06);border:1px solid rgba(255,0,60,0.16);border-radius:100px;padding:8px 24px;font-size:0.85rem;color:rgba(255,255,255,0.8);font-weight:700;backdrop-filter:blur(8px);">
+            <i class="fa-solid fa-tag" style="color:var(--crimson);"></i>
+            خدمات احترافية تبدأ من
+            <span style="font-family:'Orbitron',monospace;color:var(--crimson);font-weight:900;font-size:1rem;">28$</span>
+            فقط
+          </span>
+        </div>
+      </div>
+
+      <div class="services-grid">
+
+        <!-- Card 1 — Landing Pages — $28 -->
+        <div class="svc-card js-reveal" data-tilt>
+          <div class="svc-card-inner">
+            <div class="svc-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+            <div class="svc-title">صفحات الهبوط الاحترافية</div>
+            <p class="svc-desc">صفحة هبوط مُحسَّنة للتحويل تُعرّف بعلامتك التجارية وتحوّل الزوار إلى عملاء حقيقيين بكفاءة استثنائية.</p>
+            <ul class="svc-features">
+              <li>تصميم سريع الاستجابة — جوال وحاسوب</li>
+              <li>تحسين محركات البحث (SEO) مُدمج</li>
+              <li>تسليم خلال 3–5 أيام عمل</li>
+              <li>نموذج تواصل وتكامل واتساب</li>
+            </ul>
+            <div class="svc-price">
+              <span class="svc-from">يبدأ من</span>
+              <span class="svc-amount">28</span>
+              <span class="svc-currency">USD</span>
+            </div>
+            <a href="#contact" class="svc-link">اطلب الآن <i class="fa-solid fa-arrow-left" style="font-size:0.7rem;"></i></a>
+          </div>
+        </div>
+
+        <!-- Card 2 — E-commerce — $29 -->
+        <div class="svc-card js-reveal" data-tilt>
+          <span class="svc-featured">الأكثر طلبًا</span>
+          <div class="svc-card-inner">
+            <div class="svc-icon"><i class="fa-solid fa-store"></i></div>
+            <div class="svc-title">المتاجر الإلكترونية</div>
+            <p class="svc-desc">متجر إلكتروني متكامل بإدارة منتجات، عربة تسوق، وبوابات دفع آمنة — مصمم ليبيع على مدار الساعة.</p>
+            <ul class="svc-features">
+              <li>لوحة تحكم سهلة الاستخدام</li>
+              <li>تكامل مع الدفع الإلكتروني والكاش</li>
+              <li>واجهة عربية RTL بالكامل</li>
+              <li>متوافق مع Shopify / WooCommerce</li>
+            </ul>
+            <div class="svc-price">
+              <span class="svc-from">يبدأ من</span>
+              <span class="svc-amount">29</span>
+              <span class="svc-currency">USD</span>
+            </div>
+            <a href="#contact" class="svc-link">اطلب الآن <i class="fa-solid fa-arrow-left" style="font-size:0.7rem;"></i></a>
+          </div>
+        </div>
+
+        <!-- Card 3 — Corporate — $29 -->
+        <div class="svc-card js-reveal" data-tilt>
+          <div class="svc-card-inner">
+            <div class="svc-icon"><i class="fa-solid fa-building-columns"></i></div>
+            <div class="svc-title">مواقع الشركات والمؤسسات</div>
+            <p class="svc-desc">حضور رقمي راقٍ يعكس احترافية علامتك التجارية ويُقنع الشركاء والعملاء من النظرة الأولى.</p>
+            <ul class="svc-features">
+              <li>تصميم مخصص بهوية بصرية كاملة</li>
+              <li>صفحات متعددة: عن الشركة، الخدمات، التواصل</li>
+              <li>تحسين الأداء وسرعة التحميل</li>
+              <li>دعم فني 30 يومًا بعد الإطلاق</li>
+            </ul>
+            <div class="svc-price">
+              <span class="svc-from">يبدأ من</span>
+              <span class="svc-amount">29</span>
+              <span class="svc-currency">USD</span>
+            </div>
+            <a href="#contact" class="svc-link">اطلب الآن <i class="fa-solid fa-arrow-left" style="font-size:0.7rem;"></i></a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       STATS RIBBON
+  ══════════════════════════════════════ -->
+  <div class="stats-ribbon">
+    <div class="stats-inner">
+      <div class="stat-item"><div class="stat-num">+<em>150</em></div><div class="stat-lbl">مشروع مُسلَّم</div></div>
+      <div class="stat-item"><div class="stat-num"><em>98</em>%</div><div class="stat-lbl">رضا العملاء</div></div>
+      <div class="stat-item"><div class="stat-num"><em>3</em></div><div class="stat-lbl">أيام متوسط التسليم</div></div>
+      <div class="stat-item"><div class="stat-num">+<em>40</em></div><div class="stat-lbl">عميل نشط</div></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       PORTFOLIO
+  ══════════════════════════════════════ -->
+  <section id="portfolio">
+    <div class="container">
+      <div class="text-center">
+        <div class="section-eyebrow" style="justify-content:center;">أعمالنا المميزة</div>
+        <h2 class="section-title js-reveal">نتائج حقيقية، <span class="accent-line">تصاميم استثنائية</span></h2>
+        <p class="section-sub mx-auto js-reveal" style="text-align:center;margin-top:0.8rem;">
+          كل مشروع قصة نجاح. نصمم بشغف ونُسلِّم بدقة — تصفح أحدث أعمالنا.
+        </p>
+      </div>
+
+      <div class="portfolio-grid">
+
+        <div class="port-card js-reveal">
+          <div class="port-bg"><div class="port-mock"><div class="mock-bar"><span class="mock-dot" style="background:#ff5f56;"></span><span class="mock-dot" style="background:#ffbd2e;"></span><span class="mock-dot" style="background:#27c93f;"></span></div><div class="mock-body"><div class="mock-line" style="width:60%;background:rgba(255,0,60,0.3);"></div><div class="mock-line" style="width:82%;"></div><div class="mock-line" style="width:68%;"></div><div class="mock-block" style="background:rgba(255,0,60,0.15);"></div></div></div></div>
+          <div class="port-overlay"><div class="port-niche">متجر إلكتروني · أزياء</div><div class="port-title">LUXE Fashion Store</div><div class="port-btn"><i class="fa-solid fa-arrow-up-right-from-square"></i></div></div>
+        </div>
+
+        <div class="port-card js-reveal">
+          <div class="port-bg"><div class="port-mock"><div class="mock-bar"><span class="mock-dot" style="background:#ff5f56;"></span><span class="mock-dot" style="background:#ffbd2e;"></span><span class="mock-dot" style="background:#27c93f;"></span></div><div class="mock-body"><div class="mock-line" style="width:45%;background:rgba(80,160,255,0.3);"></div><div class="mock-line" style="width:88%;"></div><div class="mock-line" style="width:62%;"></div><div class="mock-block" style="background:rgba(80,160,255,0.12);"></div></div></div></div>
+          <div class="port-overlay"><div class="port-niche" style="color:#60aaff;">موقع شركة · عقارات</div><div class="port-title">Dar Al Majd Real Estate</div><div class="port-btn"><i class="fa-solid fa-arrow-up-right-from-square"></i></div></div>
+        </div>
+
+        <div class="port-card js-reveal">
+          <div class="port-bg"><div class="port-mock"><div class="mock-bar"><span class="mock-dot" style="background:#ff5f56;"></span><span class="mock-dot" style="background:#ffbd2e;"></span><span class="mock-dot" style="background:#27c93f;"></span></div><div class="mock-body"><div class="mock-line" style="width:55%;background:rgba(255,0,60,0.4);"></div><div class="mock-line" style="width:75%;"></div><div class="mock-line" style="width:82%;"></div><div class="mock-block" style="background:rgba(255,0,60,0.18);"></div></div></div></div>
+          <div class="port-overlay"><div class="port-niche">صفحة هبوط · مطعم</div><div class="port-title">Saveur Maroc Restaurant</div><div class="port-btn"><i class="fa-solid fa-arrow-up-right-from-square"></i></div></div>
+        </div>
+
+        <div class="port-card js-reveal">
+          <div class="port-bg"><div class="port-mock"><div class="mock-bar"><span class="mock-dot" style="background:#ff5f56;"></span><span class="mock-dot" style="background:#ffbd2e;"></span><span class="mock-dot" style="background:#27c93f;"></span></div><div class="mock-body"><div class="mock-line" style="width:70%;background:rgba(0,200,140,0.3);"></div><div class="mock-line" style="width:50%;"></div><div class="mock-line" style="width:85%;"></div><div class="mock-block" style="background:rgba(0,200,140,0.12);"></div></div></div></div>
+          <div class="port-overlay"><div class="port-niche" style="color:#00c88c;">متجر · مستحضرات</div><div class="port-title">Glow Beauty Shop</div><div class="port-btn"><i class="fa-solid fa-arrow-up-right-from-square"></i></div></div>
+        </div>
+
+        <div class="port-card js-reveal">
+          <div class="port-bg"><div class="port-mock"><div class="mock-bar"><span class="mock-dot" style="background:#ff5f56;"></span><span class="mock-dot" style="background:#ffbd2e;"></span><span class="mock-dot" style="background:#27c93f;"></span></div><div class="mock-body"><div class="mock-line" style="width:50%;background:rgba(170,100,255,0.3);"></div><div class="mock-line" style="width:80%;"></div><div class="mock-line" style="width:60%;"></div><div class="mock-block" style="background:rgba(170,100,255,0.12);"></div></div></div></div>
+          <div class="port-overlay"><div class="port-niche" style="color:#b478ff;">موقع شخصي · مدرب</div><div class="port-title">Coach Youssef Portfolio</div><div class="port-btn"><i class="fa-solid fa-arrow-up-right-from-square"></i></div></div>
+        </div>
+
+        <div class="port-card js-reveal">
+          <div class="port-bg"><div class="port-mock"><div class="mock-bar"><span class="mock-dot" style="background:#ff5f56;"></span><span class="mock-dot" style="background:#ffbd2e;"></span><span class="mock-dot" style="background:#27c93f;"></span></div><div class="mock-body"><div class="mock-line" style="width:65%;background:rgba(200,160,80,0.3);"></div><div class="mock-line" style="width:88%;"></div><div class="mock-line" style="width:55%;"></div><div class="mock-block" style="background:rgba(200,160,80,0.12);"></div></div></div></div>
+          <div class="port-overlay"><div class="port-niche" style="color:#c8a040;">صفحة هبوط · استشارات</div><div class="port-title">Atlas Consulting Agency</div><div class="port-btn"><i class="fa-solid fa-arrow-up-right-from-square"></i></div></div>
+        </div>
+
+      </div>
+
+      <div class="text-center js-reveal" style="margin-top:3rem;">
+        <a href="https://wa.me/212716693580?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%20%D8%B2%D9%82%20%D9%85%D9%8A%D8%A4%D9%8A%D9%86%D8%8C%20%D8%A3%D9%88%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%D9%83%D9%85" target="_blank" rel="noopener" class="btn-ghost">
+          <i class="fa-brands fa-whatsapp" style="color:#25d366;"></i>
+          اطّلع على المزيد من أعمالنا
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       CONTACT
+  ══════════════════════════════════════ -->
+  <section id="contact">
+    <div class="container">
+      <div class="text-center">
+        <div class="section-eyebrow" style="justify-content:center;">تواصل معنا</div>
+        <h2 class="section-title js-reveal">فكرتك <span class="accent-line">تستحق أفضل تنفيذ</span></h2>
+        <p class="section-sub mx-auto js-reveal" style="text-align:center;margin-top:0.8rem;">
+          أخبرنا بما تريد — فريقنا سيتواصل معك خلال أقل من 24 ساعة.
+        </p>
+      </div>
+
+      <div class="contact-wrap">
+
+        <!-- Info -->
+        <div class="contact-info js-reveal">
+          <h3>لنصنع شيئًا رائعًا معًا</h3>
+          <p>سواء كنت تبدأ من الصفر أو تريد تطوير حضورك الرقمي — نحن هنا لنحوّل رؤيتك إلى واقع رقمي يُبهر عملاءك.</p>
+          <div class="contact-rows">
+            <div class="cinfo-row"><div class="cinfo-icon"><i class="fa-solid fa-envelope"></i></div><div class="cinfo-text">zaiadelkarfi@gmail.com</div></div>
+            <div class="cinfo-row"><div class="cinfo-icon"><i class="fa-brands fa-whatsapp"></i></div><div class="cinfo-text">+212 716 693 580</div></div>
+            <div class="cinfo-row"><div class="cinfo-icon"><i class="fa-solid fa-clock"></i></div><div style="font-size:0.83rem;color:rgba(255,255,255,0.7);">رد خلال أقل من 24 ساعة</div></div>
+            <div class="cinfo-row">
+              <div class="cinfo-icon"><i class="fa-brands fa-instagram"></i></div>
+              <a href="https://www.instagram.com/zid.web?igsh=MWx5bGt0ODhncWF3ZA==" target="_blank" rel="noopener" style="font-size:0.83rem;color:var(--crimson);text-decoration:none;font-weight:700;">@zid.web</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form -->
+        <div class="js-reveal">
+          <div class="form-glass">
+            <!-- Success state -->
+            <div id="form-success">
+              <div class="suc-icon"><i class="fa-solid fa-check"></i></div>
+              <h4>تم إرسال طلبك بنجاح!</h4>
+              <p>شكرًا لثقتك بنا. سيتواصل معك فريقنا خلال 24 ساعة على أقصى تقدير.</p>
+            </div>
+
+            <form id="contact-form" novalidate>
+              <input type="hidden" name="access_key" value="E24ed647-b902-430c-b802-ac0bbffe0b54" />
+              <input type="hidden" name="subject" value="طلب خدمة جديد من Zidweb" />
+              <input type="hidden" name="from_name" value="ZidWeb Contact" />
+
+              <div class="fg-row">
+                <div class="fg-group">
+                  <label class="fg-label" for="fname">الاسم الكامل</label>
+                  <input type="text" id="fname" name="name" class="fg-input" placeholder="محمد الأمين" required />
+                </div>
+                <div class="fg-group">
+                  <label class="fg-label" for="femail">البريد الإلكتروني</label>
+                  <input type="email" id="femail" name="email" class="fg-input" placeholder="example@mail.com" required style="direction:ltr;text-align:right;" />
+                </div>
+              </div>
+
+              <div class="fg-group">
+                <label class="fg-label" for="fservice">نوع الخدمة المطلوبة</label>
+                <select id="fservice" name="service" class="fg-input" required>
+                  <option value="" disabled selected>اختر الخدمة...</option>
+                  <option value="landing-page">صفحة هبوط احترافية</option>
+                  <option value="ecommerce">متجر إلكتروني</option>
+                  <option value="corporate">موقع شركة / مؤسسة</option>
+                  <option value="redesign">إعادة تصميم موقع قائم</option>
+                  <option value="other">خدمة أخرى</option>
+                </select>
+              </div>
+
+              <div class="fg-group">
+                <label class="fg-label" for="fmsg">تفاصيل المشروع</label>
+                <textarea id="fmsg" name="message" class="fg-input" placeholder="أخبرنا عن مشروعك، الهدف، والميزانية المتوقعة..." required></textarea>
+              </div>
+
+              <button type="submit" id="submit-btn" class="btn-primary" style="width:100%;justify-content:center;margin-top:0.4rem;">
+                <i class="fa-solid fa-paper-plane"></i>
+                إرسال الطلب
+              </button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════ -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" style="text-decoration:none;">
+          <svg viewBox="0 0 160 44" fill="none" style="height:34px;width:auto;" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="4,6 26,6 4,29 26,29" fill="none" stroke="#ff003c" stroke-width="2" stroke-linejoin="round"/>
+            <line x1="4" y1="6" x2="26" y2="6" stroke="#ff003c" stroke-width="2" stroke-linecap="round"/>
+            <line x1="4" y1="29" x2="26" y2="29" stroke="#ff003c" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="28" cy="7" r="2.2" fill="#ff003c"/>
+            <text x="35" y="26" font-family="Orbitron,monospace" font-size="17" font-weight="900" fill="white" letter-spacing="1.5">id</text>
+            <text x="68" y="26" font-family="Orbitron,monospace" font-size="17" font-weight="900" fill="#ff003c" letter-spacing="1.5">web</text>
+          </svg>
+        </a>
+        <p>وكالة رقمية متخصصة في تصميم وتطوير المواقع الاحترافية والمتاجر الإلكترونية. نبني حضورك الرقمي بأعلى معايير الجودة.</p>
+      </div>
+      <div class="footer-col">
+        <h4>الخدمات</h4>
+        <ul>
+          <li><a href="#services">صفحات الهبوط</a></li>
+          <li><a href="#services">المتاجر الإلكترونية</a></li>
+          <li><a href="#services">مواقع الشركات</a></li>
+          <li><a href="#contact">طلب مشروع</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>تواصل</h4>
+        <ul>
+          <li><a href="mailto:zaiadelkarfi@gmail.com">البريد الإلكتروني</a></li>
+          <li><a href="https://wa.me/212716693580" target="_blank" rel="noopener">واتساب</a></li>
+          <li><a href="https://www.instagram.com/zid.web?igsh=MWx5bGt0ODhncWF3ZA==" target="_blank" rel="noopener">إنستغرام</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 ZidWeb · جميع الحقوق محفوظة.</p>
+      <div class="social-row">
+        <a href="https://www.instagram.com/zid.web?igsh=MWx5bGt0ODhncWF3ZA==" target="_blank" rel="noopener" class="social-a" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://wa.me/212716693580?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%20%D8%B2%D9%82%20%D9%85%D9%8A%D8%A4%D9%8A%D9%86%D8%8C%20%D8%A3%D9%88%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%D9%83%D9%85" target="_blank" rel="noopener" class="social-a" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+        <a href="mailto:zaiadelkarfi@gmail.com" class="social-a" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ══════════════════════════════════════
+       WHATSAPP FLOAT
+  ══════════════════════════════════════ -->
+  <a href="https://wa.me/212716693580?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%20%D8%B2%D9%82%20%D9%85%D9%8A%D8%A4%D9%8A%D9%86%D8%8C%20%D8%A3%D9%88%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%D9%83%D9%85"
+     class="wa-float" target="_blank" rel="noopener" aria-label="واتساب">
+    <i class="fa-brands fa-whatsapp"></i>
+    <span class="wa-tooltip">تحدث مع فريقنا الآن</span>
+  </a>
+
+  <!-- ══════════════════════════════════════
+       SCRIPTS
+  ══════════════════════════════════════ -->
+  <script>
+  window.addEventListener('DOMContentLoaded', () => {
+
+    /* ─── 1. PRELOADER ─────────────────────────────── */
+    const plFill    = document.getElementById('pl-fill');
+    const plPct     = document.getElementById('pl-pct');
+    const preloader = document.getElementById('preloader');
+    let   prog      = 0;
+
+    const plTimer = setInterval(() => {
+      const step = prog < 75 ? 3.5 : prog < 94 ? 1 : 0.35;
+      prog = Math.min(prog + step, 100);
+      plFill.style.width = prog + '%';
+      plPct.textContent  = Math.floor(prog) + '%';
+      if (prog >= 100) {
+        clearInterval(plTimer);
+        setTimeout(() => {
+          if (typeof gsap !== 'undefined') {
+            gsap.to(preloader, {
+              opacity: 0, duration: 0.55, ease: 'power2.out',
+              onComplete: () => { preloader.style.display = 'none'; }
+            });
+          } else {
+            preloader.style.display = 'none';
+          }
+        }, 250);
+      }
+    }, 24);
+
+    /* ─── 2. CUSTOM CURSOR ─────────────────────────── */
+    const dot  = document.getElementById('cx-dot');
+    const ring = document.getElementById('cx-ring');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      dot.style.left = mx + 'px';
+      dot.style.top  = my + 'px';
+    });
+    (function trackRing() {
+      rx += (mx - rx) * 0.13;
+      ry += (my - ry) * 0.13;
+      ring.style.left = rx + 'px';
+      ring.style.top  = ry + 'px';
+      requestAnimationFrame(trackRing);
+    })();
+
+    /* Expand ring on interactive elements */
+    document.querySelectorAll('a,button,select,[data-tilt]').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        ring.style.width  = '52px';
+        ring.style.height = '52px';
+        ring.style.borderColor = 'rgba(255,0,60,0.8)';
+      });
+      el.addEventListener('mouseleave', () => {
+        ring.style.width  = '36px';
+        ring.style.height = '36px';
+        ring.style.borderColor = 'rgba(255,0,60,0.6)';
+      });
+    });
+
+    /* ─── 3. THREE.JS PARTICLE ENGINE ─────────────── */
+    (() => {
+      const canvas = document.getElementById('bg-canvas');
+      if (!canvas || typeof THREE === 'undefined') return;
+
+      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setClearColor(0x000000, 0);
+
+      const scene  = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.z = 5;
+
+      /* Particle field */
+      const N   = 2000;
+      const pos = new Float32Array(N * 3);
+      for (let i = 0; i < N; i++) {
+        pos[i*3]   = (Math.random() - 0.5) * 22;
+        pos[i*3+1] = (Math.random() - 0.5) * 22;
+        pos[i*3+2] = (Math.random() - 0.5) * 14;
+      }
+      const pGeo = new THREE.BufferGeometry();
+      pGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+      const pMat = new THREE.PointsMaterial({
+        color: 0xff003c, size: 0.032,
+        transparent: true, opacity: 0.28,
+        sizeAttenuation: true,
+      });
+      scene.add(new THREE.Points(pGeo, pMat));
+
+      /* Rotating wireframe icosahedron */
+      const iMesh = new THREE.Mesh(
+        new THREE.IcosahedronGeometry(2.4, 1),
+        new THREE.MeshBasicMaterial({ color: 0xff003c, wireframe: true, transparent: true, opacity: 0.03 })
+      );
+      scene.add(iMesh);
+
+      /* Subtle torus ring */
+      const tMesh = new THREE.Mesh(
+        new THREE.TorusGeometry(3.5, 0.012, 8, 80),
+        new THREE.MeshBasicMaterial({ color: 0xff003c, transparent: true, opacity: 0.06 })
+      );
+      tMesh.rotation.x = Math.PI / 3;
+      scene.add(tMesh);
+
+      let scrollY = 0;
+      let mouseX  = 0, mouseY = 0;
+      window.addEventListener('scroll', () => { scrollY = window.scrollY; }, { passive: true });
+      document.addEventListener('mousemove', e => {
+        mouseX = (e.clientX / window.innerWidth  - 0.5) * 2;
+        mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+      });
+
+      (function loop() {
+        requestAnimationFrame(loop);
+        const t = Date.now() * 0.00022;
+        pGeo.attributes.position.needsUpdate = false;
+        scene.rotation.y = t * 0.08 + mouseX * 0.06;
+        scene.rotation.x = mouseY * 0.04;
+        iMesh.rotation.y = t * 0.3;
+        iMesh.rotation.x = t * 0.18;
+        tMesh.rotation.z = t * 0.1;
+        camera.position.y = -scrollY * 0.0008;
+        renderer.render(scene, camera);
+      })();
+
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    })();
+
+    /* ─── 4. NAVBAR SCROLL ─────────────────────────── */
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+
+    /* ─── 5. LANG DROPDOWN ─────────────────────────── */
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.lang-wrap')) {
+        document.getElementById('lang-dropdown').classList.remove('open');
+      }
+    });
+
+    /* ─── 6. GSAP SCROLL REVEALS ───────────────────── */
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+
+      /* Hero sequence */
+      const htl = gsap.timeline({ delay: 0.5 });
+      htl.to('.hero-h1',    { opacity: 1, y: 0, duration: 0.9,  ease: 'power3.out' })
+         .to('.hero-desc',  { opacity: 1, y: 0, duration: 0.7,  ease: 'power3.out' }, '-=0.5')
+         .to('.hero-ctas',  { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' }, '-=0.4')
+         .to('.trust-row',  { opacity: 1,        duration: 0.7,                     }, '-=0.3');
+
+      /* Generic scroll reveals */
+      gsap.utils.toArray('.js-reveal').forEach((el, i) => {
+        gsap.fromTo(el,
+          { opacity: 0, y: 36 },
+          {
+            opacity: 1, y: 0,
+            duration: 0.75, ease: 'power3.out',
+            scrollTrigger: { trigger: el, start: 'top 87%', once: true },
+            delay: (i % 3) * 0.07,
+          }
+        );
+      });
+
+      /* Stat counters */
+      gsap.utils.toArray('.stat-num em, .trust-num em').forEach(el => {
+        const end = parseInt(el.textContent);
+        if (isNaN(end)) return;
+        let cur = 0;
+        ScrollTrigger.create({
+          trigger: el, start: 'top 84%', once: true,
+          onEnter: () => {
+            const iv = setInterval(() => {
+              cur = Math.min(cur + end / 45, end);
+              el.textContent = Math.floor(cur);
+              if (cur >= end) { el.textContent = end; clearInterval(iv); }
+            }, 20);
+          }
+        });
+      });
+    }
+
+    /* ─── 7. PARALLAX HERO LAYERS ─────────────────── */
+    window.addEventListener('mousemove', e => {
+      const cx = window.innerWidth  / 2;
+      const cy = window.innerHeight / 2;
+      const dx = (e.clientX - cx) / cx;
+      const dy = (e.clientY - cy) / cy;
+      document.querySelectorAll('.parallax-layer').forEach(el => {
+        const depth = parseFloat(el.dataset.depth || 0.04);
+        el.style.transform = `translate(${dx * depth * 28}px, ${dy * depth * 20}px)`;
+      });
+    });
+
+    /* ─── 8. 3D TILT ON SERVICE CARDS ─────────────── */
+    document.querySelectorAll('[data-tilt]').forEach(card => {
+      const MAX_TILT = 8;
+      card.addEventListener('mousemove', e => {
+        const r  = card.getBoundingClientRect();
+        const cx = r.left + r.width  / 2;
+        const cy = r.top  + r.height / 2;
+        const dx = (e.clientX - cx) / (r.width  / 2);
+        const dy = (e.clientY - cy) / (r.height / 2);
+        card.style.transform = `perspective(900px) rotateY(${dx*MAX_TILT}deg) rotateX(${-dy*MAX_TILT}deg) translateZ(8px)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(900px) rotateY(0) rotateX(0) translateZ(0)';
+      });
+    });
+
+    /* ─── 9. WEB3FORMS AJAX ────────────────────────── */
+    const form      = document.getElementById('contact-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const successEl = document.getElementById('form-success');
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const orig = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جارٍ الإرسال...';
+
+      try {
+        const res  = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(Object.fromEntries(new FormData(form))),
+        });
+        const data = await res.json();
+        if (data.success) {
+          form.style.display = 'none';
+          successEl.style.display = 'block';
+          if (typeof gsap !== 'undefined') {
+            gsap.fromTo(successEl, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' });
+          }
+        } else {
+          throw new Error(data.message);
+        }
+      } catch {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = orig;
+        alert('حدث خطأ أثناء الإرسال. يرجى المحاولة عبر واتساب مباشرة.');
+      }
+    });
+
+  }); /* end DOMContentLoaded */
+
+  /* ─── MOBILE MENU ──────────────────────────────── */
+  function toggleMenu() {
+    document.getElementById('mobile-nav').classList.toggle('open');
+    document.getElementById('hamburger').classList.toggle('open');
+  }
+  function closeMenu() {
+    document.getElementById('mobile-nav').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+  }
+  </script>
+</body>
+</html>
