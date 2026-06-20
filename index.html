@@ -160,7 +160,6 @@
     /* ═══════════════════════════════════════════
        ATMOSPHERIC DEPTH LAYERS
     ═══════════════════════════════════════════ */
-    /* Vertical gradient vignette */
     body::before {
       content: '';
       position: fixed; inset: 0;
@@ -169,7 +168,7 @@
     }
 
     /* ═══════════════════════════════════════════
-       FLOATING 3D ORBS (background atmosphere)
+       FLOATING 3D ORBS
     ═══════════════════════════════════════════ */
     .orb {
       position: fixed;
@@ -227,11 +226,9 @@
       box-shadow: 0 8px 40px rgba(0,0,0,0.4);
     }
 
-    /* SVG Logo sizing */
     #navbar .logo-wrap { display: flex; align-items: center; text-decoration: none; }
     #navbar .logo-wrap svg { height: 38px; width: auto; }
 
-    /* Nav links */
     .nav-link {
       position: relative;
       font-size: 0.85rem; font-weight: 600;
@@ -250,7 +247,6 @@
     .nav-link:hover { color: #fff; }
     .nav-link:hover::after { width: 100%; }
 
-    /* Language dropdown */
     .lang-btn {
       display: flex; align-items: center; gap: 6px;
       background: rgba(255,255,255,0.04);
@@ -284,7 +280,6 @@
     }
     #lang-dropdown a:hover { background: rgba(255,0,60,0.1); color: #fff; }
 
-    /* CTA button — navbar */
     .btn-nav {
       display: inline-flex; align-items: center; gap: 6px;
       background: var(--crimson);
@@ -297,7 +292,6 @@
     }
     .btn-nav:hover { background: var(--crimson-glow); transform: translateY(-1px); box-shadow: 0 6px 28px rgba(255,0,60,0.45); }
 
-    /* Hamburger */
     .hamburger {
       display: none; flex-direction: column; gap: 5px;
       background: none; border: none; cursor: pointer; padding: 4px;
@@ -316,7 +310,6 @@
       .hamburger{ display:flex; }
     }
 
-    /* Mobile menu */
     #mobile-nav {
       display: none;
       position: fixed; top: 76px; inset-x: 0;
@@ -363,7 +356,6 @@
       line-height: 1.9; max-width: 540px;
     }
 
-    /* Glowing underline accent */
     .accent-line {
       position: relative; display: inline-block;
     }
@@ -413,12 +405,10 @@
       font-weight: 900; color: #fff;
       line-height: 1.12; max-width: 980px;
       margin: 0 auto 1.5rem;
-      /* Text reveal via GSAP — starts hidden */
       opacity: 0; transform: translateY(50px);
     }
     .hero-h1 .cr { color: var(--crimson); }
 
-    /* Kinetic text shimmer on accent */
     .hero-h1 .cr {
       background: linear-gradient(120deg, #ff003c 0%, #ff6680 40%, #ff003c 100%);
       background-size: 200% auto;
@@ -480,7 +470,6 @@
     }
     .btn-ghost:hover { border-color: rgba(255,0,60,0.4); background: rgba(255,0,60,0.06); transform: translateY(-2px); }
 
-    /* Trust metrics */
     .trust-row {
       display: flex; gap: 0; flex-wrap: wrap; justify-content: center;
       opacity: 0;
@@ -539,11 +528,10 @@
     .mq-dot { color: var(--crimson); margin: 0 4px; }
 
     /* ═══════════════════════════════════════════
-       SERVICES — 3D CARDS
+       SERVICES
     ═══════════════════════════════════════════ */
     #services { padding: 110px 2rem; }
 
-    /* 3-column grid */
     .services-grid {
       display: grid;
       grid-template-columns: repeat(3,1fr);
@@ -552,7 +540,6 @@
     @media(max-width:960px){.services-grid{grid-template-columns:1fr 1fr;}}
     @media(max-width:600px){.services-grid{grid-template-columns:1fr;}}
 
-    /* The 3D tilt card */
     .svc-card {
       position: relative;
       background: var(--dark-card);
@@ -566,14 +553,12 @@
       cursor: default;
     }
 
-    /* Animated gradient top-edge glow on hover */
     .svc-card::before {
       content: '';
       position: absolute; top: 0; left: 0; right: 0; height: 1px;
       background: linear-gradient(90deg, transparent, var(--crimson), transparent);
       opacity: 0; transition: opacity 0.4s;
     }
-    /* Inner highlight bubble */
     .svc-card::after {
       content: '';
       position: absolute; top: -60px; left: -60px;
@@ -587,7 +572,6 @@
     .svc-card:hover::before { opacity: 1; }
     .svc-card:hover::after { opacity: 1; transform: translate(10px,10px); }
 
-    /* 3D depth line — the "card face" translateZ layer */
     .svc-card-inner {
       position: relative;
       transform: translateZ(0px);
@@ -595,7 +579,6 @@
     }
     .svc-card:hover .svc-card-inner { transform: translateZ(12px); }
 
-    /* Icon badge */
     .svc-icon {
       width: 50px; height: 50px;
       background: rgba(255,0,60,0.08);
@@ -608,7 +591,6 @@
     }
     .svc-card:hover .svc-icon { background: rgba(255,0,60,0.15); transform: scale(1.06) rotate(-3deg); }
 
-    /* Featured badge */
     .svc-featured {
       position: absolute; top: 1.2rem; left: 1.2rem;
       background: linear-gradient(135deg, var(--crimson-dark), var(--crimson-glow));
@@ -634,7 +616,6 @@
       box-shadow: 0 0 6px var(--crimson);
     }
 
-    /* Price chip */
     .svc-price {
       display: inline-flex; align-items: baseline; gap: 3px;
       background: rgba(255,0,60,0.08);
@@ -649,7 +630,6 @@
     }
     .svc-currency { font-size: 0.7rem; color: var(--muted); }
 
-    /* CTA link */
     .svc-link {
       display: inline-flex; align-items: center; gap: 5px;
       color: var(--crimson); font-size: 0.82rem; font-weight: 700;
@@ -719,7 +699,6 @@
     }
     .port-card:hover .port-bg { transform: scale(1.06); }
 
-    /* Colorway per card */
     .port-card:nth-child(1) .port-bg { background: linear-gradient(135deg,#0f0c29,#302b63,#24243e); }
     .port-card:nth-child(2) .port-bg { background: linear-gradient(135deg,#141e30,#1c3a55); }
     .port-card:nth-child(3) .port-bg { background: linear-gradient(135deg,#1a0005,#3b0010); }
@@ -727,7 +706,6 @@
     .port-card:nth-child(5) .port-bg { background: linear-gradient(135deg,#0a1a20,#1a4050); }
     .port-card:nth-child(6) .port-bg { background: linear-gradient(135deg,#10180a,#2a4015); }
 
-    /* Mockup UI inside portfolio cards */
     .port-mock {
       width: 72%; height: 72%; border-radius: 8px;
       background: rgba(255,255,255,0.03);
@@ -741,7 +719,6 @@
     .mock-line { height: 5px; border-radius: 3px; background: rgba(255,255,255,0.07); }
     .mock-block { height: 26px; border-radius: 5px; margin-top: auto; }
 
-    /* Hover overlay */
     .port-overlay {
       position: absolute; inset: 0;
       background: rgba(5,5,10,0.88);
@@ -791,7 +768,6 @@
     }
     .cinfo-text { font-size: 0.83rem; color: rgba(255,255,255,0.7); direction: ltr; }
 
-    /* Form glass card */
     .form-glass {
       background: rgba(15,15,24,0.7);
       border: 1px solid rgba(255,255,255,0.07);
@@ -832,13 +808,11 @@
     textarea.fg-input { height: auto; min-height: 126px; resize: vertical; }
     select.fg-input option { background: #0f0f18; color: #fff; }
 
-    /* Mobile form fix */
     @media(max-width:768px){
       .fg-input { font-size: 16px!important; height: 52px!important; padding: 14px 14px!important; line-height:1.5!important; }
       textarea.fg-input { height: auto!important; min-height: 140px!important; padding: 14px!important; }
     }
 
-    /* Success state */
     #form-success {
       display: none; text-align: center; padding: 3rem 1rem;
     }
@@ -919,48 +893,32 @@
       50%{box-shadow:0 6px 40px rgba(37,211,102,0.6), 0 0 0 8px rgba(37,211,102,0.08);}
     }
 
-    /* ═══════════════════════════════════════════
-       UTILITY
-    ═══════════════════════════════════════════ */
     .container { max-width: 1100px; margin: 0 auto; }
     .text-center { text-align: center; }
     .mx-auto { margin-left: auto; margin-right: auto; }
-
-    /* Parallax depth wrapper (JS sets transform) */
     .parallax-layer { will-change: transform; }
   </style>
 </head>
 <body>
 
-  <!-- ── Cursor ── -->
   <div id="cx-dot"></div>
   <div id="cx-ring"></div>
 
-  <!-- ── Noise ── -->
   <div id="noise"></div>
 
-  <!-- ── Atmospheric orbs ── -->
   <div class="orb orb-1"></div>
   <div class="orb orb-2"></div>
   <div class="orb orb-3"></div>
 
-  <!-- ══════════════════════════════════════
-       PRELOADER
-  ══════════════════════════════════════ -->
   <div id="preloader">
     <div class="pl-logo">
-      <!-- SVG logo (same as navbar, just larger) -->
       <svg width="160" height="44" viewBox="0 0 160 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Z glyph -->
         <polygon points="6,7 28,7 6,30 28,30" fill="none" stroke="#ff003c" stroke-width="2.2" stroke-linejoin="round"/>
         <line x1="6" y1="7" x2="28" y2="7" stroke="#ff003c" stroke-width="2.2" stroke-linecap="round"/>
         <line x1="6" y1="30" x2="28" y2="30" stroke="#ff003c" stroke-width="2.2" stroke-linecap="round"/>
-        <!-- Accent dot -->
         <circle cx="30" cy="8" r="2.5" fill="#ff003c"/>
-        <!-- Brand text "idweb" in Orbitron-style shapes -->
         <text x="38" y="27" font-family="'Orbitron',monospace" font-size="18" font-weight="900" fill="white" letter-spacing="1">id</text>
         <text x="72" y="27" font-family="'Orbitron',monospace" font-size="18" font-weight="900" fill="#ff003c" letter-spacing="1">web</text>
-        <!-- Underline rule -->
         <line x1="38" y1="33" x2="155" y2="33" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
       </svg>
     </div>
@@ -970,43 +928,30 @@
     <div class="pl-pct" id="pl-pct">0%</div>
   </div>
 
-  <!-- ── Three.js canvas ── -->
   <canvas id="bg-canvas"></canvas>
 
-  <!-- ══════════════════════════════════════
-       NAVBAR
-  ══════════════════════════════════════ -->
   <header id="navbar">
-    <!-- SVG Logo -->
     <a href="#" class="logo-wrap" aria-label="ZidWeb Home">
       <svg viewBox="0 0 160 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Z shape — four nodes connected as a Z -->
         <polygon points="4,6 26,6 4,29 26,29" fill="none" stroke="#ff003c" stroke-width="2" stroke-linejoin="round"/>
         <line x1="4" y1="6" x2="26" y2="6" stroke="#ff003c" stroke-width="2" stroke-linecap="round"/>
         <line x1="4" y1="29" x2="26" y2="29" stroke="#ff003c" stroke-width="2" stroke-linecap="round"/>
-        <!-- Signature accent dot -->
         <circle cx="28" cy="7" r="2.2" fill="#ff003c">
           <animate attributeName="opacity" values="1;0.3;1" dur="2.5s" repeatCount="indefinite"/>
         </circle>
-        <!-- "id" in white -->
         <text x="35" y="26" font-family="Orbitron,monospace" font-size="17" font-weight="900" fill="white" letter-spacing="1.5">id</text>
-        <!-- "web" in crimson -->
         <text x="68" y="26" font-family="Orbitron,monospace" font-size="17" font-weight="900" fill="#ff003c" letter-spacing="1.5">web</text>
-        <!-- Micro sub-rule -->
         <line x1="35" y1="32" x2="155" y2="32" stroke="rgba(255,0,60,0.18)" stroke-width="0.8"/>
       </svg>
     </a>
 
-    <!-- Desktop nav links -->
     <nav class="nav-links" style="display:flex;align-items:center;gap:2.4rem;">
       <a href="#services" class="nav-link">الخدمات</a>
       <a href="#portfolio" class="nav-link">أعمالنا</a>
       <a href="#contact" class="nav-link">تواصل معنا</a>
     </nav>
 
-    <!-- Right cluster -->
     <div style="display:flex;align-items:center;gap:0.9rem;">
-      <!-- Language selector -->
       <div class="lang-wrap" style="position:relative;">
         <button class="lang-btn" onclick="document.getElementById('lang-dropdown').classList.toggle('open')">
           <i class="fa-solid fa-globe" style="font-size:0.75rem;"></i>
@@ -1028,7 +973,6 @@
     </div>
   </header>
 
-  <!-- Mobile nav -->
   <nav id="mobile-nav">
     <a href="#services" onclick="closeMenu()">الخدمات</a>
     <a href="#portfolio" onclick="closeMenu()">أعمالنا</a>
@@ -1038,9 +982,6 @@
     </a>
   </nav>
 
-  <!-- ══════════════════════════════════════
-       HERO
-  ══════════════════════════════════════ -->
   <section id="hero">
     <div class="hero-badge parallax-layer" data-depth="0.06">
       <span class="pulse-dot"></span>
@@ -1089,9 +1030,6 @@
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════
-       MARQUEE
-  ══════════════════════════════════════ -->
   <div class="marquee-wrap">
     <div class="marquee-track">
       <span class="mq-item">تصميم واجهات <span class="mq-dot">•</span> تطوير مواقع <span class="mq-dot">•</span> متاجر إلكترونية <span class="mq-dot">•</span> حلول ذكية <span class="mq-dot">•</span> هويات بصرية <span class="mq-dot">•</span> تسويق رقمي <span class="mq-dot">•</span></span>
@@ -1101,9 +1039,6 @@
     </div>
   </div>
 
-  <!-- ══════════════════════════════════════
-       SERVICES
-  ══════════════════════════════════════ -->
   <section id="services">
     <div class="container">
       <div class="text-center">
@@ -1112,7 +1047,6 @@
         <p class="section-sub mx-auto js-reveal" style="text-align:center;margin-top:0.8rem;">
           من الفكرة إلى الإطلاق — خدمات متكاملة بجودة عالمية وأسعار تناسب كل ميزانية.
         </p>
-        <!-- Price teaser -->
         <div class="js-reveal" style="margin-top:1.6rem;">
           <span style="display:inline-flex;align-items:center;gap:10px;background:rgba(255,0,60,0.06);border:1px solid rgba(255,0,60,0.16);border-radius:100px;padding:8px 24px;font-size:0.85rem;color:rgba(255,255,255,0.8);font-weight:700;backdrop-filter:blur(8px);">
             <i class="fa-solid fa-tag" style="color:var(--crimson);"></i>
@@ -1125,7 +1059,6 @@
 
       <div class="services-grid">
 
-        <!-- Card 1 — Landing Pages — $28 -->
         <div class="svc-card js-reveal" data-tilt>
           <div class="svc-card-inner">
             <div class="svc-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
@@ -1146,7 +1079,6 @@
           </div>
         </div>
 
-        <!-- Card 2 — E-commerce — $29 -->
         <div class="svc-card js-reveal" data-tilt>
           <span class="svc-featured">الأكثر طلبًا</span>
           <div class="svc-card-inner">
@@ -1168,7 +1100,6 @@
           </div>
         </div>
 
-        <!-- Card 3 — Corporate — $29 -->
         <div class="svc-card js-reveal" data-tilt>
           <div class="svc-card-inner">
             <div class="svc-icon"><i class="fa-solid fa-building-columns"></i></div>
@@ -1193,9 +1124,6 @@
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════
-       STATS RIBBON
-  ══════════════════════════════════════ -->
   <div class="stats-ribbon">
     <div class="stats-inner">
       <div class="stat-item"><div class="stat-num">+<em>150</em></div><div class="stat-lbl">مشروع مُسلَّم</div></div>
@@ -1205,9 +1133,6 @@
     </div>
   </div>
 
-  <!-- ══════════════════════════════════════
-       PORTFOLIO
-  ══════════════════════════════════════ -->
   <section id="portfolio">
     <div class="container">
       <div class="text-center">
@@ -1253,7 +1178,7 @@
       </div>
 
       <div class="text-center js-reveal" style="margin-top:3rem;">
-        <a href="https://wa.me/212716693580?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%20%D8%B2%D9%82%20%D9%85%D9%8A%D8%A4%D9%8A%D9%86%D8%8C%20%D8%A3%D9%88%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%D9%83%D9%85" target="_blank" rel="noopener" class="btn-ghost">
+        <a href="https://wa.me/212716693580" target="_blank" rel="noopener" class="btn-ghost">
           <i class="fa-brands fa-whatsapp" style="color:#25d366;"></i>
           اطّلع على المزيد من أعمالنا
         </a>
@@ -1261,9 +1186,6 @@
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════
-       CONTACT
-  ══════════════════════════════════════ -->
   <section id="contact">
     <div class="container">
       <div class="text-center">
@@ -1276,7 +1198,6 @@
 
       <div class="contact-wrap">
 
-        <!-- Info -->
         <div class="contact-info js-reveal">
           <h3>لنصنع شيئًا رائعًا معًا</h3>
           <p>سواء كنت تبدأ من الصفر أو تريد تطوير حضورك الرقمي — نحن هنا لنحوّل رؤيتك إلى واقع رقمي يُبهر عملاءك.</p>
@@ -1286,23 +1207,21 @@
             <div class="cinfo-row"><div class="cinfo-icon"><i class="fa-solid fa-clock"></i></div><div style="font-size:0.83rem;color:rgba(255,255,255,0.7);">رد خلال أقل من 24 ساعة</div></div>
             <div class="cinfo-row">
               <div class="cinfo-icon"><i class="fa-brands fa-instagram"></i></div>
-              <a href="https://www.instagram.com/zid.web?igsh=MWx5bGt0ODhncWF3ZA==" target="_blank" rel="noopener" style="font-size:0.83rem;color:var(--crimson);text-decoration:none;font-weight:700;">@zid.web</a>
+              <a href="https://www.instagram.com/zid.web" target="_blank" rel="noopener" style="font-size:0.83rem;color:var(--crimson);text-decoration:none;font-weight:700;">@zid.web</a>
             </div>
           </div>
         </div>
 
-        <!-- Form -->
         <div class="js-reveal">
           <div class="form-glass">
-            <!-- Success state -->
             <div id="form-success">
               <div class="suc-icon"><i class="fa-solid fa-check"></i></div>
               <h4>تم إرسال طلبك بنجاح!</h4>
               <p>شكرًا لثقتك بنا. سيتواصل معك فريقنا خلال 24 ساعة على أقصى تقدير.</p>
             </div>
 
-            <form id="contact-form" novalidate>
-              <input type="hidden" name="access_key" value="E24ed647-b902-430c-b802-ac0bbffe0b54" />
+            <form id="contact-form">
+              <input type="hidden" name="access_key" value="e24ed647-b902-430c-b802-ac0bbffe0b54" />
               <input type="hidden" name="subject" value="طلب خدمة جديد من Zidweb" />
               <input type="hidden" name="from_name" value="ZidWeb Contact" />
 
@@ -1346,9 +1265,6 @@
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════
-       FOOTER
-  ══════════════════════════════════════ -->
   <footer>
     <div class="footer-grid">
       <div class="footer-brand">
@@ -1378,32 +1294,25 @@
         <ul>
           <li><a href="mailto:zaiadelkarfi@gmail.com">البريد الإلكتروني</a></li>
           <li><a href="https://wa.me/212716693580" target="_blank" rel="noopener">واتساب</a></li>
-          <li><a href="https://www.instagram.com/zid.web?igsh=MWx5bGt0ODhncWF3ZA==" target="_blank" rel="noopener">إنستغرام</a></li>
+          <li><a href="https://www.instagram.com/zid.web" target="_blank" rel="noopener">إنستغرام</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
       <p>© 2025 ZidWeb · جميع الحقوق محفوظة.</p>
       <div class="social-row">
-        <a href="https://www.instagram.com/zid.web?igsh=MWx5bGt0ODhncWF3ZA==" target="_blank" rel="noopener" class="social-a" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-        <a href="https://wa.me/212716693580?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%20%D8%B2%D9%82%20%D9%85%D9%8A%D8%A4%D9%8A%D9%86%D8%8C%20%D8%A3%D9%88%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%D9%83%D9%85" target="_blank" rel="noopener" class="social-a" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+        <a href="https://www.instagram.com/zid.web" target="_blank" rel="noopener" class="social-a" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://wa.me/212716693580" target="_blank" rel="noopener" class="social-a" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
         <a href="mailto:zaiadelkarfi@gmail.com" class="social-a" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
       </div>
     </div>
   </footer>
 
-  <!-- ══════════════════════════════════════
-       WHATSAPP FLOAT
-  ══════════════════════════════════════ -->
-  <a href="https://wa.me/212716693580?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%20%D8%B2%D9%82%20%D9%85%D9%8A%D8%A4%D9%8A%D9%86%D8%8C%20%D8%A3%D9%88%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%D9%83%D9%85"
-     class="wa-float" target="_blank" rel="noopener" aria-label="واتساب">
+  <a href="https://wa.me/212716693580" class="wa-float" target="_blank" rel="noopener" aria-label="واتساب">
     <i class="fa-brands fa-whatsapp"></i>
     <span class="wa-tooltip">تحدث مع فريقنا الآن</span>
   </a>
 
-  <!-- ══════════════════════════════════════
-       SCRIPTS
-  ══════════════════════════════════════ -->
   <script>
   window.addEventListener('DOMContentLoaded', () => {
 
@@ -1451,7 +1360,6 @@
       requestAnimationFrame(trackRing);
     })();
 
-    /* Expand ring on interactive elements */
     document.querySelectorAll('a,button,select,[data-tilt]').forEach(el => {
       el.addEventListener('mouseenter', () => {
         ring.style.width  = '52px';
@@ -1479,7 +1387,6 @@
       const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
       camera.position.z = 5;
 
-      /* Particle field */
       const N   = 2000;
       const pos = new Float32Array(N * 3);
       for (let i = 0; i < N; i++) {
@@ -1496,14 +1403,12 @@
       });
       scene.add(new THREE.Points(pGeo, pMat));
 
-      /* Rotating wireframe icosahedron */
       const iMesh = new THREE.Mesh(
         new THREE.IcosahedronGeometry(2.4, 1),
         new THREE.MeshBasicMaterial({ color: 0xff003c, wireframe: true, transparent: true, opacity: 0.03 })
       );
       scene.add(iMesh);
 
-      /* Subtle torus ring */
       const tMesh = new THREE.Mesh(
         new THREE.TorusGeometry(3.5, 0.012, 8, 80),
         new THREE.MeshBasicMaterial({ color: 0xff003c, transparent: true, opacity: 0.06 })
@@ -1556,14 +1461,12 @@
     if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
       gsap.registerPlugin(ScrollTrigger);
 
-      /* Hero sequence */
       const htl = gsap.timeline({ delay: 0.5 });
       htl.to('.hero-h1',    { opacity: 1, y: 0, duration: 0.9,  ease: 'power3.out' })
          .to('.hero-desc',  { opacity: 1, y: 0, duration: 0.7,  ease: 'power3.out' }, '-=0.5')
          .to('.hero-ctas',  { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' }, '-=0.4')
          .to('.trust-row',  { opacity: 1,        duration: 0.7,                     }, '-=0.3');
 
-      /* Generic scroll reveals */
       gsap.utils.toArray('.js-reveal').forEach((el, i) => {
         gsap.fromTo(el,
           { opacity: 0, y: 36 },
@@ -1576,7 +1479,6 @@
         );
       });
 
-      /* Stat counters */
       gsap.utils.toArray('.stat-num em, .trust-num em').forEach(el => {
         const end = parseInt(el.textContent);
         if (isNaN(end)) return;
@@ -1629,6 +1531,13 @@
 
     form.addEventListener('submit', async e => {
       e.preventDefault();
+
+      // التحقق من الحقول المطلوبة قبل الإرسال لمنع الإرسال الفارغ
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
       const orig = submitBtn.innerHTML;
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جارٍ الإرسال...';
@@ -1656,7 +1565,7 @@
       }
     });
 
-  }); /* end DOMContentLoaded */
+  });
 
   /* ─── MOBILE MENU ──────────────────────────────── */
   function toggleMenu() {
